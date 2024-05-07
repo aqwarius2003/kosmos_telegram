@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from save_foto import save_image
 from dotenv import load_dotenv
+import argparse
 
 
 def epic_download_images(token_nasa, path, data_string=None):  # если даты нет - то качает последние
@@ -30,7 +31,13 @@ def epic_download_images(token_nasa, path, data_string=None):  # если дат
         save_image(image_url, f'{path}{image_name}.png', payload)
 
 
-load_dotenv()
-token_nasa = os.environ['API_TOKEN_NASA']
-path = 'nasa_epic_png/'
-epic_download_images(token_nasa, path, '2023-02-03')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Скачивает EPIC фото с сайта NASA')
+    parser.add_argument('-d', '--date',
+                        help='Дата фотографий, формат %Y-%m-%d, без указания скачает последние'
+                        )
+    data = parser.parse_args().date
+    load_dotenv()
+    token_nasa = os.environ['API_TOKEN_NASA']
+    path = 'nasa_epic_png/'
+    epic_download_images(token_nasa, path, data)
