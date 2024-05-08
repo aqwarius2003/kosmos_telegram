@@ -7,7 +7,6 @@ import argparse
 
 
 def epic_download_images(token_nasa, path, data_string=None):  # если даты нет - то качает последние
-    os.makedirs(path, exist_ok=True)  # Создаем папку, если ее нет
     payload = {'api_key': token_nasa}
     if data_string is None:  # ищем последнюю публикацию
         url = 'https://api.nasa.gov/EPIC/api/natural/all'
@@ -15,12 +14,10 @@ def epic_download_images(token_nasa, path, data_string=None):  # если дат
         response.raise_for_status()
         data_string = response.json()[0]['date']  # последнюю дату публикации
     data = datetime.strptime(data_string, '%Y-%m-%d').date()
-    print(data)
     url = f"https://api.nasa.gov/EPIC/api/natural/date/{str(data)}"
     response = requests.get(url, params=payload)  # Исправлено: передаем параметры запроса как словарь
     response.raise_for_status()
     response_images = response.json()
-    print(response_images)
 
     for image_n in response_images:
         image_name = image_n['image']
@@ -39,5 +36,6 @@ if __name__ == '__main__':
     data = parser.parse_args().date
     load_dotenv()
     token_nasa = os.environ['API_TOKEN_NASA']
-    path = 'nasa_epic_png/'
+    path = 'images/'
+    os.makedirs(path, exist_ok=True)
     epic_download_images(token_nasa, path, data)

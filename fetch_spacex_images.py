@@ -27,6 +27,6 @@ if __name__ == '__main__':
     id_launch = parser.parse_args().id_launch
     load_dotenv()
     token_nasa = os.environ['API_TOKEN_NASA']
-    path = 'Spice_X/'
+    path = 'images/'
     os.makedirs(path, exist_ok=True)
     fetch_spacex_last_launch(path, id_launch)
