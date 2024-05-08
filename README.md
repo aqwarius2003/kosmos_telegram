@@ -51,4 +51,4 @@ Python должен быть установлен.
 Создайте телеграм бота, [получите](https://telegram.me/BotFather) его токен _API_TELEGRAM_ (переменную добавить в файл .env - см. выше) 
 Сделайте телеграм канал, добавьте своего бота админом и ссылку на канал в формате @name добавьте в переменную _TG_CHANNEL_NAME_.   
                 
-                send_image_telegram.py -t 0,5
+                send_image_telegram.py -t 3
