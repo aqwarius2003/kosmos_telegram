@@ -6,16 +6,17 @@ from dotenv import load_dotenv
 import argparse
 
 
-def epic_download_images(token_nasa, path, data_string=None):  # если даты нет - то качает последние
+def epic_download_images(token_nasa, path_images, date_photo=None):
     payload = {'api_key': token_nasa}
-    if data_string is None:  # ищем последнюю публикацию
+    if not date_photo:
         url = 'https://api.nasa.gov/EPIC/api/natural/all'
         response = requests.get(url, params=payload)
         response.raise_for_status()
-        data_string = response.json()[0]['date']  # последнюю дату публикации
-    data = datetime.strptime(data_string, '%Y-%m-%d').date()
-    url = f"https://api.nasa.gov/EPIC/api/natural/date/{str(data)}"
-    response = requests.get(url, params=payload)  # Исправлено: передаем параметры запроса как словарь
+        date_photo = response.json()[0]['date']
+
+    date_photos_epic = datetime.strptime(date_photo, '%Y-%m-%d').date()
+    url = f"https://api.nasa.gov/EPIC/api/natural/date/{str(date_photos_epic)}"
+    response = requests.get(url, params=payload)
     response.raise_for_status()
     response_images = response.json()
 
@@ -23,19 +24,24 @@ def epic_download_images(token_nasa, path, data_string=None):  # если дат
         image_name = image_n['image']
         image_url = (
             "https://epic.gsfc.nasa.gov/archive/natural/"
-            f"{str(data.strftime('%Y/%m/%d'))}/png/{image_name}.png"
+            f"{str(date_photos_epic.strftime('%Y/%m/%d'))}/png/{image_name}.png"
         )
-        save_image(image_url, f'{path}{image_name}.png', payload)
+        save_image(image_url, f'{path_images}{image_name}.png', payload)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Скачивает EPIC фото с сайта NASA')
-    parser.add_argument('-d', '--date',
-                        help='Дата фотографий, формат %Y-%m-%d, без указания скачает последние'
-                        )
-    data = parser.parse_args().date
+    parser = argparse.ArgumentParser(
+        description='Скачивает EPIC фото с сайта NASA'
+    )
+    parser.add_argument(
+        "-d",
+        "--date",
+        help="Дата фотографий, формат %Y-%m-%d, '"
+             "'без указания скачает последние",
+    )
+    date_photos = parser.parse_args().date
     load_dotenv()
     token_nasa = os.environ['API_TOKEN_NASA']
     path = 'images/'
     os.makedirs(path, exist_ok=True)
-    epic_download_images(token_nasa, path, data)
+    epic_download_images(token_nasa, path, date_photos)

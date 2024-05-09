@@ -1,22 +1,20 @@
 import argparse
-from dotenv import load_dotenv
 import requests
 import os
-# from urllib.parse import urlparse, unquote
 from save_foto import save_image
 
 
-def fetch_spacex_last_launch(path, id_launch):
-    url = f"https://api.spacexdata.com/v5/launches/{id_launch}"
+def fetch_spacex_last_launch(path_images_spicex, launch_id):
+    url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
     response = requests.get(url)
     response.raise_for_status()
-    data = response.json()
-    images = data['links']['flickr']['original']
-    if images != []:
+    response_data = response.json()
+    images = response_data['links']['flickr']['original']
+    if images:
         for i, image_url in enumerate(images):
-            save_image(image_url, f'{path}/spacex_{i}.jpeg')
+            save_image(image_url, f'{path_images_spicex}/spacex_{i}.jpeg')
     else:
-        print(f'Фотографии с запуска {id_launch} не публиковались')
+        print(f'Фотографии с запуска {launch_id} не публиковались')
 
 
 if __name__ == '__main__':
@@ -25,8 +23,6 @@ if __name__ == '__main__':
                         help='ID запуска, без указания скачает последние',
                         default='latest')
     id_launch = parser.parse_args().id_launch
-    load_dotenv()
-    token_nasa = os.environ['API_TOKEN_NASA']
     path = 'images/'
     os.makedirs(path, exist_ok=True)
     fetch_spacex_last_launch(path, id_launch)

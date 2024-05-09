@@ -1,13 +1,12 @@
 import os
 from urllib.parse import urlparse, unquote
-
 import requests
 
 
-def get_extension_file(url):  # возвращает расширение файла
+def get_extension_file(url):
     parsed_url = urlparse(url)
     path = parsed_url.path
-    unquoted_path = unquote(path)   # декодирование URL-кодированных символов в строке / заменяет %20 на пробел
+    unquoted_path = unquote(path)
     filename = os.path.basename(unquoted_path)
     extension_file = os.path.splitext(filename)[1]
     return extension_file
