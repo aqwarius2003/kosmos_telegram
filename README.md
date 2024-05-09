@@ -7,14 +7,16 @@ Python должен быть установлен.
 
 Скачайте проект и установите зависимости :
         
-        git clone https://github.com/aqwarius2003/kosmos_telegram.git
-        cd kosmos_telegram
-        pip install -r requirements.txt
+                git clone https://github.com/aqwarius2003/kosmos_telegram.git
+                cd kosmos_telegram
+                pip install -r requirements.txt
 
 Создайте файл .env в папке проекта и заполните его своими данными:
-        API_TOKEN_NASA=<ваш токен доступа к NASA>
-        API_TELEGRAM=<API-токен вашего бота>
-        TG_CHAT_ID=<ссылка на канал формата @ваш канал>
+
+                API_TOKEN_NASA=<ваш токен доступа к NASA>
+                API_TELEGRAM=<API-токен вашего бота>
+                TG_CHAT_ID=<ссылка на канал формата @ваш канал>
+
 получить токен NASA можно по [ссылке](https://api.nasa.gov/)
 
 Получить API токен [телеграма](https://telegram.me/BotFather) 
