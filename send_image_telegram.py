@@ -6,8 +6,13 @@ import argparse
 import random
 
 
-# Функция для обработки файла на размер в мегабайтах
 def process_file(file_path):
+    """
+    Функция для обработки файла на размер в мегабайтах
+
+    :param file_path: путь к файлу, который нужно обработать
+    :return: None
+    """
     max_size = 20971520  # 20 мегабайт в байтах (20*1024*1024)
     if os.path.getsize(file_path) > max_size:
         return
