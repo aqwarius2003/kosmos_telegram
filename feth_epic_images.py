@@ -51,5 +51,4 @@ if __name__ == '__main__':
         photos_date = get_latest_photo_date(token_nasa)
 
     os.makedirs(path, exist_ok=True)
-
     epic_download_images(token_nasa, path, photos_date)
